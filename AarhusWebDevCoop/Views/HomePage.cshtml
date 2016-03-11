@@ -2,10 +2,7 @@
 @{
 	Layout = "Master.cshtml";
 }
-    <h1>@Umbraco.Field("siteTitle")</h1>
-@Umbraco.Field("logo")
-    <p>@Umbraco.Field("mainContent")</p>
-
-<div>
-    @Umbraco.RenderMacro("latest_projects")
-</div>
+@if (CurrentPage.homePageGrid.ToString() != "")
+{
+    @CurrentPage.GetGridHtml("homePageGrid");
+}

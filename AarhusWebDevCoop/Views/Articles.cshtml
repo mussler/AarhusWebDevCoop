@@ -1,5 +1,7 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
 	Layout = "Master.cshtml";
-}@Umbraco.Field("articlesTitle")
-	@Umbraco.Field("articlesBodyText")
+}@if (CurrentPage.articlesGrid.ToString() != "")
+{
+    @CurrentPage.GetGridHtml("articlesGrid");
+}

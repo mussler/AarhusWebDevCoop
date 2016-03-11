@@ -41,9 +41,7 @@
                                     <i class="glyphicon glyphicon-envelope" style="margin-bottom: 10px;margin-right: 10px;"></i>Skills:
                                         @{
                                             String[] skills = member.GetValue("skills").ToString().Split(',');
-                                            string skillString =
-                                            string.Join(", ", from skill in skills
-                                                              select umbraco.library.GetPreValueAsString(Convert.ToInt32(skill)));
+                                            string skillString =  string.Join(", ", from skill in skills select library.GetPreValueAsString(Convert.ToInt32(skill)));
                                             @skillString
                                         }
                                 </p>

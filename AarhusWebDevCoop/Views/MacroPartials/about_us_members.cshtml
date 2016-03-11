@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@using Umbraco.Core.Persistence.DatabaseModelDefinitions;
+
+@{
+    int maxDisplay = Convert.ToInt32(Model.MacroParameters["maxDisplay"]);
+    var memberService = ApplicationContext.Current.Services.MemberService;
+    int count = memberService.GetMembersByGroup("Active Members").Count();
+    var members = memberService.GetMembersByGroup("Active Members").Take(maxDisplay);
+    int iteration = 0;
+
+}
+
+
+<div class="row-fluid">
+    <p>We have a total of <strong>@count</strong> active members!</p>
+    <div class="col">
+        @{
+
+            String names = "";
+            foreach (var member in members)
+            {
+                if (iteration == 0)
+                {
+                    names = member.GetValue("firstname") + " " + member.GetValue("lastname");
+                }
+                else if (iteration >= maxDisplay)
+                {
+                    names += "...and many more.";
+                    break;
+                }
+                else {
+                    names += ", " + member.GetValue("firstname") + " " + member.GetValue("lastname");
+                }
+                iteration++;
+            }
+            @names
+        }
+    </div>
+</div>

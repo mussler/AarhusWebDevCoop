@@ -1,8 +1,5 @@
 ﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
-@{ 
-    int projectsId = 0;
-}
-
+@using umbraco.MacroEngines;
     <nav class="navbar navbar-default">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -10,86 +7,69 @@
             </div>
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    @{foreach (var page in Umbraco.TypedContentAtRoot())
-                                    {
-                                        var isProtected = library.IsProtected(page.Id, page.Path);
-                                        var loginAccess = library.IsProtected(page.Id, page.Path)
-                                        && library.HasAccess(page.Id, page.Path);
-                                        var naviHide = (bool)page.GetProperty("umbracoNaviHide").Value;
-                                        if (page.Name == "Projects")
-                                        {
-                                            projectsId = page.Id;
+                    @{
 
-                                        }
-                                        if (!isProtected || loginAccess)
+                        int startLevel = Convert.ToInt32(Model.MacroParameters["startLevel"]);
+                        int finishLevel = Convert.ToInt32(Model.MacroParameters["finishLevel"]);
+                        var parent = Model.Content.AncestorOrSelf(startLevel);
 
-                                        {
-                                            if (!naviHide)
-                                            {
-                                    <li class="@(CurrentPage.Name == page.Name ? "active" : null)"><a href="@umbraco.library.NiceUrl(page.Id)">@page.Name</a></li>
-
-                                }
-                        }
-
+                        if (parent != null)
+                        {
+                            <li class="@(CurrentPage.Name == parent.Name ? "active" : null)">
+                                <a href="@umbraco.library.NiceUrl(parent.Id)">@parent.Name</a>
+                            </li>
+                            @traverse(parent, startLevel, finishLevel);
                         }
                     }
+                    @helper traverse(dynamic parent, int startLevel, int finishLevel)
+                    {
+
+foreach (IPublishedContent node in parent.Children)
+{
 
 
+    var isProtected = library.IsProtected(node.Id, node.Path);
+    var loginAccess = library.IsProtected(node.Id, node.Path) && library.HasAccess(node.Id, node.Path);
+    var naviHide = (bool)node.GetProperty("umbracoNaviHide").Value;
+    var visible = (node.Where("Visible")) ? true : false;
+
+    if (!isProtected || loginAccess)
+    {
+        if (!naviHide && visible)
+        {
+
+
+            if (node.Level <= finishLevel && node.Children.Where("Visible && !umbracoNaviHide").Any())
+            {
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Our Projects<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                            @node.Name<span class="caret"></span>
+                        </a>
                         <ul class="dropdown-menu">
-                            @{
-
-                                foreach (var projectItem in Umbraco.TypedContent(projectsId).Children().Where("!umbracoNaviHide"))
-
-                                {
-
-                                    var isProtected = library.IsProtected(projectItem.Id, projectItem.Path);
-                                    var loginAccess = library.IsProtected(projectItem.Id, projectItem.Path)
-                                    && library.HasAccess(projectItem.Id, projectItem.Path);
-
-                                    if (!isProtected || loginAccess)
-                                    {
-
-                                        <li><a href="@projectItem.Url">@projectItem.Name</a></li>
-                                    }
-
-                                }
-                            }
+                            <li class="@(CurrentPage.Name == node.Name ? "active" : null)">
+                                <a href="@umbraco.library.NiceUrl(node.Id)">@node.Name</a>
+                            </li>
+                            @traverse(node, startLevel, finishLevel);
                         </ul>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                     </li>
+                }
+                else {
+                    <li class="@(CurrentPage.Name == node.Name ? "active" : null)">
+                        <a href="@umbraco.library.NiceUrl(node.Id)">@node.Name</a>
+                    </li>
+            }
+
+
+        }
+    }
+}
+
+}
+
                 </ul>
+
+
+
         </div>
             </div>
 </nav>

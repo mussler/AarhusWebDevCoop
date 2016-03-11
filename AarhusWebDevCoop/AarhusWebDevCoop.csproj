@@ -3471,6 +3471,11 @@
     <Content Include="Umbraco\Webservices\TreeDataService.ashx" />
     <Content Include="Umbraco\Webservices\UltimatePickerAutoCompleteHandler.ashx" />
     <Content Include="Umbraco\Xslt\Web.config" />
+    <Content Include="Views\MacroPartials\newest_members.cshtml" />
+    <Content Include="Views\MacroPartials\register_member.cshtml" />
+    <Content Include="Views\MacroPartials\about_us_members.cshtml" />
+    <Content Include="Views\MacroPartials\about_us_skills.cshtml" />
+    <Content Include="Views\MacroPartials\paginated_articles.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

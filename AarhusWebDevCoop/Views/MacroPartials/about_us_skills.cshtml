@@ -1,0 +1,51 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@using Umbraco.Core.Persistence.DatabaseModelDefinitions;
+
+@{
+    int maxDisplay = Convert.ToInt32(Model.MacroParameters["maxDisplay"]);
+    var memberService = ApplicationContext.Current.Services.MemberService;
+    var members = memberService.GetMembersByGroup("Active Members");
+
+    List<String> uniqueSkills = new List<string>();
+    foreach(var member in members)
+    {
+        String[] memberSkills = member.GetValue("skills").ToString().Split(',');
+        foreach (String skill in memberSkills)
+        {
+            String parsed_skill = library.GetPreValueAsString(Convert.ToInt32(skill)).ToFirstUpper();
+            if (!uniqueSkills.Contains(parsed_skill))
+            {
+                uniqueSkills.Add(parsed_skill);
+            }
+        }
+    }
+    //Possibly add sorting?
+
+}
+
+
+<div class="row-fluid">
+    <p>Our members present a total of <strong>@uniqueSkills.Count()</strong> unique skills!</p>
+    <div class="col">
+        @{
+
+            String skills = "";
+            for(int i = 0; i < uniqueSkills.Count(); i++)
+            {
+                if (i == 0)
+                {
+                    skills = uniqueSkills.ElementAt(i);
+                }
+                else if (i >= maxDisplay-1)
+                {
+                    skills += "...and many more.";
+                    break;
+                }
+                else {
+                    skills += ", " + uniqueSkills.ElementAt(i);
+                }
+            }
+            @skills
+        }
+    </div>
+</div>

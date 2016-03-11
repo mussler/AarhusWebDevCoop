@@ -1,6 +1,37 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
-	Layout = "Articles.cshtml";
+	Layout = "Master.cshtml";
 }
-@Umbraco.Field("articleTitle")
-	@Umbraco.Field("articleContent")
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <h2>@Umbraco.Field("articleTitle")</h2>
+        </div>
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="@library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")">
+                    Published on: @library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")
+                    <i class="glyphicon glyphicon-calendar">
+                    </i>
+                </cite>
+            </small><div class="clearfix"></div>
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="@CurrentPage.creatorName">
+                    Written by: @CurrentPage.creatorName
+                    <i class="glyphicon glyphicon-user">
+                    </i>
+                </cite>
+            </small><div class="clearfix"></div>
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="@CurrentPage.writerName">
+                    Proof read an approved: @CurrentPage.writerName
+                    <i class="glyphicon glyphicon-pencil">
+                    </i>
+                </cite>
+            </small>
+            <div class="clearfix"></div>
+            </div>
+        </div>
+</div>
+
+@Umbraco.Field("articleContent")

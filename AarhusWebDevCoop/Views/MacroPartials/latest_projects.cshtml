@@ -2,10 +2,9 @@
 
 
     <div class="list-group">
-        <p>Our five latest projects:</p>
 @{
    
-    foreach (var project in Umbraco.TypedContent(1071).Children().Where("projectStatus.Contains(\"27\")").OrderBy("CreateDate desc").Take(5))
+    foreach (var project in Umbraco.TypedContent(1071).Children().Where("projectStatus.Contains(\"27\")").OrderBy("CreateDate desc").Take(3))
     {
         <a href="@project.Url" class="list-group-item">@project.Name</a>
     }

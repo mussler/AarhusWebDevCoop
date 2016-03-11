@@ -637,7 +637,6 @@
     <Content Include="App_Data\Logs\UmbracoTraceLog.Baby.txt.2016-02-26" />
     <Content Include="App_Data\Logs\UmbracoTraceLog.Baby.txt.2016-03-04" />
     <Content Include="App_Data\Models\models.hash" />
-    <Content Include="App_Data\packages\installed\installedPackages.config" />
     <Content Include="App_Data\TEMP\ClientDependency\610822397_191af3200a224ddeb7f68d5dba6f3113.cdJ" />
     <Content Include="App_Data\TEMP\ClientDependency\610822397_1b67d21850394a56b461279897ef300e.cdC" />
     <Content Include="App_Data\TEMP\ClientDependency\610822397_266ea6237443466f99e277c8e9293fb9.cdC" />

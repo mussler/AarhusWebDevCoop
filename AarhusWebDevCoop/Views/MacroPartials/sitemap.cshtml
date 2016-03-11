@@ -1,0 +1,35 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+
+
+<div class="list-group">
+    <p>The sitemap:</p>
+    <div class="media">
+        @{
+
+
+
+            foreach (var page in Umbraco.TypedContentAtRoot().Where("!name.Contains(\"Sitemap\")"))
+            {
+                    <div class="media-body">
+                    <a href="@page.Url"><div class="media-heading">@page.Name</div></a>
+                    
+                    @foreach (var sub in page.Children()){
+                    <div class="media-left">
+                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                    </div>
+                    <div class="media-body">
+                        <a href="@sub.Url"><div class="media-heading">@sub.Name</div></a>
+                    </div>
+                    <br />
+                    }
+                </div>
+            }
+
+
+        }
+                    </div>
+</div>
+
+
+
+

@@ -1,0 +1,14 @@
+﻿[
+  {
+    "outputFile": "Content/scss/style.css",
+    "inputFile": "Content/scss/style.scss"
+  },
+  {
+    "outputFile": "Content/sass/custom.css",
+    "inputFile": "Content/sass/custom.scss"
+  },
+  {
+    "outputFile": "Content/sass/_bootstrap-variables.css",
+    "inputFile": "Content/sass/_bootstrap-variables.scss"
+  }
+]

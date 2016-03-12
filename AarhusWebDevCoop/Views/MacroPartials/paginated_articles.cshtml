@@ -11,7 +11,7 @@ else {
 }
 @{
     int pageSize = 8;
-    if (Model.MacroParameters["contentPerPage"] == null)
+    if (Model.MacroParameters["contentPerPage"] != null)
     {
         pageSize = Convert.ToInt32(Model.MacroParameters["contentPerPage"]);
     }
@@ -38,7 +38,7 @@ else {
             @foreach (var item in items.Skip((page - 1) * pageSize).Take(pageSize))
             {
                 <div class="@css_class">
-                    <h2>@item.GetPropertyValue("articleTitle")</h2>
+                    <h2><a href="@library.NiceUrl(item.Id)" class="a-unstyled">@item.GetPropertyValue("articleTitle")</a></h2>
                     <small style="display: block; line-height: 1.428571429; color: #999;">
                         <cite title="@library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")">
                             @library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")

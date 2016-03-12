@@ -1,16 +1,19 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
     Layout = null;
+
 }
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@Umbraco.Field("pageTitle", recursive: true)</title>
-	<meta name="description" content="@Umbraco.Field("metaDescription", recursive: true)">
-	<meta name="keywords" content="@Umbraco.Field("metaKeywords", recursive: true)">
+    <meta name="description" content="@Umbraco.Field("metaDescription", recursive: true)">
+    <meta name="keywords" content="@Umbraco.Field("metaKeywords", recursive: true)">
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/sass/custom.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container body-content">

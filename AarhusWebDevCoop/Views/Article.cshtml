@@ -4,10 +4,10 @@
 }
 <div class="container-fluid">
     <div class="row">
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <h2>@Umbraco.Field("articleTitle")</h2>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
             <small style="display: block; line-height: 21px; color: #999; float: right;">
                 <cite title="@library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")">
                     Published on: @library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")
@@ -32,6 +32,11 @@
             <div class="clearfix"></div>
             </div>
         </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            @Umbraco.Field("articleContent")
+            </div>
+        </div>
 </div>
 
-@Umbraco.Field("articleContent")

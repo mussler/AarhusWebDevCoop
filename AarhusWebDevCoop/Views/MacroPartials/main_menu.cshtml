@@ -21,7 +21,7 @@
                             @traverse(parent, startLevel, finishLevel);
                         }
                     }
-                    @helper traverse(dynamic parent, int startLevel, int finishLevel)
+@helper traverse(dynamic parent, int startLevel, int finishLevel)
                     {
 
 foreach (IPublishedContent node in parent.Children)
@@ -29,11 +29,11 @@ foreach (IPublishedContent node in parent.Children)
 
 
     var isProtected = library.IsProtected(node.Id, node.Path);
-    var loginAccess = library.IsProtected(node.Id, node.Path) && library.HasAccess(node.Id, node.Path);
+    var loginAccess = library.IsProtected(node.Id, node.Path) && library.HasAccess(node.Id, node.Path) && Members.IsLoggedIn();
     var naviHide = (bool)node.GetProperty("umbracoNaviHide").Value;
     var visible = (node.Where("Visible")) ? true : false;
 
-    if (!isProtected || loginAccess)
+    if (!isProtected || loginAccess || (isProtected && !Members.IsLoggedIn()))
     {
         if (!naviHide && visible)
         {
@@ -48,14 +48,21 @@ foreach (IPublishedContent node in parent.Children)
                         <ul class="dropdown-menu">
                             <li class="@(CurrentPage.Name == node.Name ? "active" : null)">
                                 <a href="@umbraco.library.NiceUrl(node.Id)">@node.Name</a>
-                            </li>
-                            @traverse(node, startLevel, finishLevel);
+                               </li>
+                            @traverse(node, startLevel, finishLevel)
                         </ul>
                     </li>
                 }
                 else {
                     <li class="@(CurrentPage.Name == node.Name ? "active" : null)">
-                        <a href="@umbraco.library.NiceUrl(node.Id)">@node.Name</a>
+                        <a href="@umbraco.library.NiceUrl(node.Id)">
+                            @node.Name
+                        @{if ((isProtected && !Members.IsLoggedIn()))
+                            {
+                                <span class="glyphicon glyphicon-lock alert-warning"></span>
+                            }
+                        }
+                    </a>
                     </li>
             }
 
@@ -67,9 +74,6 @@ foreach (IPublishedContent node in parent.Children)
 }
 
                 </ul>
-
-
-
         </div>
             </div>
 </nav>

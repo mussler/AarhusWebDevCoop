@@ -1,17 +1,25 @@
 ﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
 
 
-    <div class="list-group">
-@{
-   
-    foreach (var project in Umbraco.TypedContent(1071).Children().Where("projectStatus.Contains(\"27\")").OrderBy("CreateDate desc").Take(3))
-    {
-        <a href="@project.Url" class="list-group-item">@project.Name</a>
+<div class="list-group">
+    @{
+
+        foreach (var project in Umbraco.TypedContent(1071).Children().Where("projectStatus.Contains(\"27\")").OrderBy("CreateDate desc").Take(3))
+        {
+            var isProtected = library.IsProtected(project.Id, project.Path);
+            var noLoginAccess = library.IsProtected(project.Id, project.Path) && !library.HasAccess(project.Id, project.Path) && Members.IsLoggedIn();
+            <a href="@project.Url" class="list-group-item">
+                @project.Name
+                @{if (isProtected && !Members.IsLoggedIn())
+                    {
+                        <span class="glyphicon glyphicon-lock alert-warning"></span>
+                    }
+                    else if (noLoginAccess)
+                    {
+                        <span class="glyphicon glyphicon-exclamation-sign alert-danger"></span>
+                    }
+                }
+            </a>
+                    }
     }
-}
-    </div>
-
-
-
-       
-   
+</div>

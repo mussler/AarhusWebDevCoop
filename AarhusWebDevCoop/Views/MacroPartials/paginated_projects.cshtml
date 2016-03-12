@@ -1,0 +1,128 @@
+﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+@helper Truncate(string input, int length)
+{
+if (input.Length <= length)
+{
+        @Html.Raw(input)
+}
+else {
+        @Html.Raw(input.Substring(0, length))<text>...</text>
+}
+}
+@helper isProtected(IPublishedContent node)
+{
+    @umbraco.library.IsProtected(node.Id, node.Path);
+}
+@helper hasLoginAccess(IPublishedContent node)
+{
+    @(umbraco.library.IsProtected(node.Id, node.Path) && umbraco.library.HasAccess(node.Id, node.Path));
+}
+
+
+@{
+    
+    int pageSize = 8;
+    if (Model.MacroParameters["contentPerPage"] != null)
+    {
+        pageSize = Convert.ToInt32(Model.MacroParameters["contentPerPage"]);
+    }
+    int columnSize = 4;
+    if (pageSize < 3)
+    {
+        columnSize = 12 / pageSize;
+    }
+    String css_class = "col-lg-" + columnSize + " col-md-" + columnSize + " col-sm-" + columnSize + " col-xs-12";
+
+    var page = 1; int.TryParse(Request.QueryString["page"], out page);
+    var items = Umbraco.TypedContent(Model.Content.Id).Children.Where(x => x.DocumentTypeAlias == "projectItem").Where("Visible").OrderByDescending(x => x.CreateDate);
+    var itemsCount = items.Count();
+    List<int> toSkip = new List<int>();
+    foreach (var item in items)
+    {
+        
+        if ((isProtected(item).ToString() == "True") && (hasLoginAccess(item).ToString() == "False") && (Members.IsLoggedIn())) // User is logged in, but has no access to protected page -> Dont display the project
+                                                                                                                                //Note: Cast to string cause of HelperResult object
+        {
+            if (itemsCount > 0)
+            {
+                itemsCount--;
+            }
+            //mark Id for skipping
+            toSkip.Add(item.Id);
+        }
+    }
+    var totalPages = (int)Math.Ceiling((double)itemsCount / (double)pageSize);
+    if (page > totalPages)
+    {
+        page = totalPages;
+    }
+    else if (page < 1)
+    {
+        page = 1;
+    }
+    <div class="container-fluid">
+        <div class="row">
+            @foreach (var item in items.Skip((page - 1) * pageSize).Take(pageSize))
+            {
+                if (toSkip.Contains(item.Id))
+                {
+                }
+                else {
+                    <div class="@css_class">
+                        <h2><a href="@library.NiceUrl(item.Id)" class="a-unstyled">@item.GetPropertyValue("projectTitle")</a></h2>
+                        <small style="display: block; line-height: 1.428571429; color: #999;">
+                            <cite title="@library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")">
+                                @library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")
+                                <i class="glyphicon glyphicon-calendar">
+                                </i>
+                            </cite>
+                        </small>
+                        <small style="display: block; line-height: 1.428571429; color: #999;">
+                            <cite title="@library.GetPreValueAsString((int)item.GetPropertyValue("projectStatus"))">
+                                Status: @library.GetPreValueAsString((int)item.GetPropertyValue("projectStatus"))
+                                <i class="glyphicon glyphicon-wrench">
+                                </i>
+                            </cite>
+                        </small>
+                        @{ String projectContent = item.GetPropertyValue("projectContent").ToString(); }
+                        <p>
+                            @{
+                                if (isProtected(item).ToString() == "True" && !Members.IsLoggedIn())
+                                {
+                                    <span class="warning">This content is available to logged in users only.<br/> <a href="@library.NiceUrl(item.Id)">Log in</a> to continue.</span>
+                                }  else {
+
+                                    @Truncate(projectContent, 220);<a href="@library.NiceUrl(item.Id)">View details.</a>
+                                    }
+                                }
+                        </p>
+                    </div>
+                                    }
+                                }
+        </div>
+    </div>
+                                if (totalPages > 1)
+                                {
+                                    <nav class="navbar navbar-default">
+
+                                        <div class="container-fluid">
+                                            <ul class="nav navbar-nav">
+                                                @if (page > 1)
+                                                {
+                                                    <li><a href="?page=@(page-1)">Prev</a></li>
+                                                }
+                                                @for (int p = 1; p < totalPages + 1; p++)
+                                                {
+                                                    <li class="@(p == page ? "active" : string.Empty)">
+                                                        <a href="?page=@p">Page @p</a>
+                                                    </li>
+                                                }
+                                                @if (page < totalPages)
+                                                {
+                                                    <li><a href="?page=@(page+1)">Next</a></li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    </nav>
+                                }
+}

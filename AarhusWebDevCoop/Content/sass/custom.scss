@@ -1,3 +1,21 @@
-﻿body {
-    background-color: blue;
+﻿$unstyledAColor: #333;
+$unstyledAColorHover: #000;
+$unstyledAColorInverse: #969696;
+$unstyledAColorInverseHover: #FFF;
+
+.a-unstyled {
+    color: $unstyledAColor;
+    &:link { color: $unstyledAColor; }
+    &:visited { color: $unstyledAColor; }
+    &:hover { color: $unstyledAColorHover; }
+    &:active { color: $unstyledAColor; }
+}
+
+.navbar-inverse .a-unstyled {
+    color: $unstyledAColorInverse;
+
+    &:link { color: $unstyledAColorInverse; }
+    &:visited { color: $unstyledAColorInverse; }
+    &:hover { color: $unstyledAColorInverseHover; }
+    &:active { color: $unstyledAColorInverse; }
 }

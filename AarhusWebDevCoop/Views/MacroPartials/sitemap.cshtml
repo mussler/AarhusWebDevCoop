@@ -1,33 +1,122 @@
 ﻿@inherits Umbraco.Web.Macros.PartialViewMacroPage
+<div class="container-fluid">
+    <div class="col-lg-3 col-md-4 col-sm-4  col-xs-12">
+    <div class="list-group">
+        <h3>The Sitemap:</h3>
+        <div class="media">
+            @{
 
+                int startLevel = 1;
+                int finishLevel = 50;
+                var parent = Model.Content.AncestorOrSelf(startLevel);
 
-<div class="list-group">
-    <p>The sitemap:</p>
-    <div class="media">
-        @{
-
-
-
-            foreach (var page in Umbraco.TypedContentAtRoot().Where("!name.Contains(\"Sitemap\")"))
-            {
+                if (parent != null)
+                {
                     <div class="media-body">
-                    <a href="@page.Url"><div class="media-heading">@page.Name</div></a>
-                    
-                    @foreach (var sub in page.Children()){
-                    <div class="media-left">
-                        <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                        <a href="@library.NiceUrl(parent.Id)">
+                            <div class="media-heading">
+                                @parent.Name
+                                @renderStatus(parent)
+                            </div>
+                        </a>
+
+                        @traverse(parent, startLevel, finishLevel);
                     </div>
-                    <div class="media-body">
-                        <a href="@sub.Url"><div class="media-heading">@sub.Name</div></a>
-                    </div>
-                    <br />
-                    }
-                </div>
+                }
             }
+            @helper traverse(dynamic parent, int startLevel, int finishLevel)
+            {
+
+foreach (IPublishedContent node in parent.Children)
+{
 
 
-        }
-                    </div>
+
+
+    if (node.Level <= finishLevel)
+    {   <div>
+                <div class="media-left">
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </div>
+                <div class="media-body">
+                    <a href="@library.NiceUrl(node.Id)">
+                        <div class="media-heading">
+                            @node.Name
+                            @renderStatus(node)
+                        </div>
+                    </a>
+                    @traverse(node, startLevel, finishLevel)
+                </div>
+            </div>
+    }
+    else {
+            <div>
+                <div class="media-left">
+                    <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+                </div>
+                <div class="media-body">
+                    <a href="@umbraco.library.NiceUrl(node.Id)">
+                        <div class="media-heading">
+                            @node.Name
+                            @renderStatus(node)
+                        </div>
+                    </a>
+                </div>
+            </div>
+
+
+
+    }
+}
+
+}
+            @helper renderStatus(IPublishedContent node)
+            {
+
+var isProtected = library.IsProtected(node.Id, node.Path);
+var noLoginAccess = library.IsProtected(node.Id, node.Path) && !library.HasAccess(node.Id, node.Path) && Members.IsLoggedIn();
+var visible = (node.Where("Visible")) ? true : false;
+
+if (!visible)
+{
+        <cite title="Hidden From Navigation">
+            <span class="glyphicon glyphicon-eye-close alert-danger"></span>
+        </cite>
+
+}
+if (visible)
+{
+        <cite title="Visible in navigation">
+            <span class="glyphicon glyphicon-eye-open alert-info"></span>
+        </cite>
+
+}
+if (isProtected)
+{
+        <cite title="Available only for Logged in Users">
+            <span class="glyphicon glyphicon-lock alert-warning"></span>
+        </cite>
+
+}
+if (noLoginAccess)
+{
+        <cite title="Content blocked for current user">
+            <span class="glyphicon glyphicon-exclamation-sign alert-danger"></span>
+        </cite>
+
+}
+
+}
+
+        </div></div>
+    </div>
+    <div class="col-lg-4 col-md-6 col-sm-4 col-xs-12">
+        <h3>Legend: </h3>
+        <p><span class="glyphicon glyphicon-exclamation-sign alert-danger"></span> - No access for current user</p>
+        <p><span class="glyphicon glyphicon-eye-close alert-danger"></span> - Hidden from navigation</p>
+        <p><span class="glyphicon glyphicon-eye-open alert-info"></span> - Visible in navigation</p>
+        <p><span class="glyphicon glyphicon-lock alert-warning"></span> - Accessible by logging in</p>
+</div>
 </div>
 
 

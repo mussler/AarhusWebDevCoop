@@ -1,7 +1,62 @@
 ﻿@inherits Umbraco.Web.Mvc.UmbracoTemplatePage
 @{
-	Layout = "Master.cshtml";
+    Layout = "Master.cshtml";
 }
-@Umbraco.Field("projectTitle")
-	@Umbraco.Field("projectDescription")
-	@Umbraco.Field("projectStatus")
+@{ 
+    var projectStatus = CurrentPage.GetPropertyValue("projectStatus");
+    if (projectStatus != 27 && !Members.IsLoggedIn()) // Public can only see completed
+    {
+        Response.Redirect("~/login");
+    }
+    if (Members.IsLoggedIn() && !(projectStatus == 13 || projectStatus == 27)) // Prospect can only see completed and initiated
+    {
+        var roles = Roles.GetRolesForUser(Members.CurrentUserName);
+        if (!roles.Contains("Active Members")) {
+            Response.Redirect("~/forbidden");
+
+        }
+    }
+}
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <h2>@Umbraco.Field("projectTitle")</h2>
+        </div>
+        <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="@library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")">
+                    Published on: @library.FormatDateTime(CurrentPage.CreateDate.ToString(), "dd MMMM yy")
+                    <i class="glyphicon glyphicon-calendar">
+                    </i>
+                </cite>
+            </small><div class="clearfix"></div>
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="@library.GetPreValueAsString((int)projectStatus)">
+                    @projectStatus
+                    Status: @library.GetPreValueAsString((int)projectStatus)
+                    <i class="glyphicon glyphicon-wrench">
+                    </i>
+                </cite>
+            </small><div class="clearfix"></div>
+            @{ if (!library.IsProtected(CurrentPage.Id, CurrentPage.Path)) { //if public
+            <small style="display: block; line-height: 21px; color: #999; float: right;">
+                <cite title="Publicly avaialble">
+                    Publicly avaialble
+                    <i class="glyphicon glyphicon-globe">
+                    </i>
+                </cite>
+            </small>
+
+                    }
+                }
+
+            <div class="clearfix"></div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            @Umbraco.Field("projectContent")
+        </div>
+    </div>
+</div>

@@ -3397,6 +3397,7 @@
     <Content Include="Views\MacroPartials\about_us_members.cshtml" />
     <Content Include="Views\MacroPartials\about_us_skills.cshtml" />
     <Content Include="Views\MacroPartials\paginated_articles.cshtml" />
+    <Content Include="Views\MacroPartials\paginated_projects.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

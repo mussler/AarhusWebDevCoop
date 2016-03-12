@@ -6,50 +6,73 @@
 }
 @{
     var memberService = ApplicationContext.Current.Services.MemberService;
-    var members = memberService.GetMembersByGroup("Active Members");
+    var members = memberService.GetAllMembers();
     foreach (var member in members)
     {
+
+
         string imagePath = "http://www.adtechnology.co.uk/images/UGM-default-user.png";
-        if (member.GetValue("photo") != null)
+
+        if (member.HasProperty("photo") && member.GetValue("photo") != null)
         {
-            string image = member.GetValue<string>
-                ("photo");
-            ImageCropDataSet imageCrops = JsonConvert.DeserializeObject<ImageCropDataSet>
-                (image);
+            string image = member.GetValue<string>("photo");
+            ImageCropDataSet imageCrops = JsonConvert.DeserializeObject<ImageCropDataSet>(image);
             imagePath = imageCrops.Src.GetCropUrl();
         }
+        var roles = Roles.GetRolesForUser(member.Username);
         <div class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-6 col-md-8">
                     <div class="well well-sm">
                         <div class="row">
                             <div class="col-sm-6 col-md-4">
-                                <img src="@imagePath" alt="@member.GetValue("firstname") @member.GetValue("lastname")" class="img-rounded img-responsive" />
+                                <img src="@imagePath" alt="@member.GetValue("firstName") @member.GetValue("lastName")" class="img-rounded img-responsive" />
                             </div>
                             <div class="col-sm-6 col-md-8">
-                                <h4>@member.GetValue("firstname") @member.GetValue("lastname")</h4>
-                                <small style="display: block; line-height: 1.428571429; color: #999;">
-                                    <cite title="@member.GetValue("address"), @member.GetValue("zip") @member.GetValue("city")">
-                                        @member.GetValue("address")<br />@member.GetValue("zip") @member.GetValue("city")<i class="glyphicon glyphicon-map-marker">
-                                        </i>
-                                    </cite>
-                                </small>
+                                <h4>@member.GetValue("firstName") @member.GetValue("lastName")</h4>
+
+                                @{if (member.HasProperty("address"))
+                                    {
+                                        <small style="display: block; line-height: 1.428571429; color: #999;">
+                                            <cite title="@member.GetValue("address"), @member.GetValue("zip") @member.GetValue("city")">
+                                                @member.GetValue("address")<br />@member.GetValue("zip") @member.GetValue("city")<i class="glyphicon glyphicon-map-marker">
+                                                </i>
+                                            </cite>
+                                        </small>
+                                    }
+                                }
                                 <p>
                                     <i class="glyphicon glyphicon-envelope" style="margin-bottom: 10px;margin-right: 10px;"></i>@member.Email
                                 </p>
+                                @{if (member.HasProperty("skills"))
+                                    {
+                                        <p>
+                                            <i class="glyphicon glyphicon-pencil" style="margin-bottom: 10px;margin-right: 10px;"></i>Skills:
+                                            @{
+                                                String[] skills = member.GetValue("skills").ToString().Split(',');
+                                                string skillString = string.Join(", ", from skill in skills select library.GetPreValueAsString(Convert.ToInt32(skill)));
+                                                @skillString
+                                            }
+                                        </p>
+                                                }
+                                }
                                 <p>
-                                    <i class="glyphicon glyphicon-envelope" style="margin-bottom: 10px;margin-right: 10px;"></i>Skills:
-                                        @{
-                                            String[] skills = member.GetValue("skills").ToString().Split(',');
-                                            string skillString =  string.Join(", ", from skill in skills select library.GetPreValueAsString(Convert.ToInt32(skill)));
-                                            @skillString
+                                    <i class="glyphicon glyphicon-user" style="margin-bottom: 10px;margin-right: 10px;"></i>Member of Groups:<br />
+                                    @{
+                                        foreach (var role in roles)
+                                        {
+                                            <small style="display: block; line-height: 1.428571429; color: #0094ff;">
+                                                <cite title="@role.ToString()">
+                                                   @role
+                                                </cite>
+                                            </small>
                                         }
+                                    }
                                 </p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-                                                }
-                                            }
+        </div>}
+}

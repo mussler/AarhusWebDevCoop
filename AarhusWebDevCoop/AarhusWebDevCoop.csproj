@@ -633,6 +633,9 @@
     <Content Include="media\1002\alice-cooper.jpg" />
     <Content Include="media\1003\axl.jpg" />
     <Content Include="media\1004\generic-logo-hi.png" />
+    <Content Include="media\1005\generic-logo-hi.png" />
+    <Content Include="media\1005\generic-logo-hi_thumb.jpg" />
+    <Content Include="media\1005\generic-logo-hi_thumb.png" />
     <Content Include="packages.config" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

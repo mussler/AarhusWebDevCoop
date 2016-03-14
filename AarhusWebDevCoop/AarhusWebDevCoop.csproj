@@ -490,12 +490,6 @@
     <Content Include="bower_components\bootstrap-sass\assets\javascripts\bootstrap\tab.js" />
     <Content Include="bower_components\bootstrap-sass\assets\javascripts\bootstrap\tooltip.js" />
     <Content Include="bower_components\bootstrap-sass\assets\javascripts\bootstrap\transition.js" />
-    <Content Include="bower_components\bootstrap-sass\assets\_bootstrap.css">
-      <DependentUpon>_bootstrap.scss</DependentUpon>
-    </Content>
-    <Content Include="bower_components\bootstrap-sass\assets\_bootstrap.min.css">
-      <DependentUpon>_bootstrap.css</DependentUpon>
-    </Content>
     <Content Include="bower_components\jquery\AUTHORS.txt" />
     <Content Include="bower_components\jquery\dist\jquery.js" />
     <Content Include="bower_components\jquery\dist\jquery.min.js" />

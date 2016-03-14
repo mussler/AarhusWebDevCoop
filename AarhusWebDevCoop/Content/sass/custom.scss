@@ -1,7 +1,9 @@
-﻿$unstyledAColor: #333;
-$unstyledAColorHover: #000;
-$unstyledAColorInverse: #969696;
+﻿$unstyledAColor: $text-color !default;
+$unstyledAColorHover: darken($text-color, 10%) !default;
+$unstyledAColorInverse: lighten($text-color, 30%) !default;
 $unstyledAColorInverseHover: #FFF;
+$small-color: darken($headings-color, 16%) !default;
+$strong-color: darken($headings-color, 10%) !default;
 
 .a-unstyled {
     color: $unstyledAColor;
@@ -18,4 +20,12 @@ $unstyledAColorInverseHover: #FFF;
     &:visited { color: $unstyledAColorInverse; }
     &:hover { color: $unstyledAColorInverseHover; }
     &:active { color: $unstyledAColorInverse; }
+}
+
+small {
+    color: $small-color;
+}
+
+strong {
+    color: $strong-color;
 }

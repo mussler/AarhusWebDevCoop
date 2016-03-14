@@ -1,5 +1,4 @@
-﻿@import "bootstrap-variables";
-@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-@import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap-compass";
-@import "custom";
-
+﻿@import "_bootstrap-variables.scss";
+@import "../../bower_components/bootstrap-sass/assets/_bootstrap.scss";
+@import "_bootstrap-compass.scss";
+@import "custom.scss";

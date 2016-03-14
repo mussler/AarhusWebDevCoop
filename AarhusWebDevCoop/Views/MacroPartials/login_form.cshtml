@@ -33,7 +33,7 @@
             <br />
 
 
-            <button type="b­utt­on" class=­"btn btn-de­fau­lt">Login</button>
+            <button id="contact-submit" type="submit" class="btn btn-primary input-medium pullleft">Login</button>
             <br />
             @Html.ValidationMessage("loginModel", new { @class = "label alert-danger" })
         </fieldset>
@@ -48,7 +48,7 @@ else {
             using (Html.BeginUmbracoForm<UmbLoginStatusController>
                 ("HandleLogout"))
             {
-            <button type="b­utt­on" class=­"btn btn-de­fau­lt">Logout</button>
+                <button id="contact-submit" type="submit" class="btn btn-primary input-medium pullleft">Logout</button>
             @Html.HiddenFor(m => logoutModel.RedirectUrl)
                 }
             }

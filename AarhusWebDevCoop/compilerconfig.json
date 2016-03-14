@@ -10,5 +10,17 @@
   {
     "outputFile": "Content/sass/_bootstrap-variables.css",
     "inputFile": "Content/sass/_bootstrap-variables.scss"
+  },
+  {
+    "outputFile": "Content/sass/_bootstrap.css",
+    "inputFile": "Content/sass/_bootstrap.scss"
+  },
+  {
+    "outputFile": "bower_components/bootstrap-sass/assets/_bootstrap.css",
+    "inputFile": "bower_components/bootstrap-sass/assets/_bootstrap.scss"
+  },
+  {
+    "outputFile": "Content/sass/style.css",
+    "inputFile": "Content/sass/style.scss"
   }
 ]

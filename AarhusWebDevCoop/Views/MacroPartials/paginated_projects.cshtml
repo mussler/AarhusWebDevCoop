@@ -70,14 +70,14 @@ else {
                 else {
                     <div class="@css_class">
                         <h2><a href="@library.NiceUrl(item.Id)" class="a-unstyled">@item.GetPropertyValue("projectTitle")</a></h2>
-                        <small style="display: block; line-height: 1.428571429; color: #999;">
+                        <small style="display: block; line-height: 1.428571429;">
                             <cite title="@library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")">
                                 @library.FormatDateTime(item.CreateDate.ToString(), "dd MMMM yy")
                                 <i class="glyphicon glyphicon-calendar">
                                 </i>
                             </cite>
                         </small>
-                        <small style="display: block; line-height: 1.428571429; color: #999;">
+                        <small style="display: block; line-height: 1.428571429;">
                             <cite title="@library.GetPreValueAsString((int)item.GetPropertyValue("projectStatus"))">
                                 Status: @library.GetPreValueAsString((int)item.GetPropertyValue("projectStatus"))
                                 <i class="glyphicon glyphicon-wrench">

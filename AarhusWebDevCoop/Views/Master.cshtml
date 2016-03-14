@@ -12,8 +12,7 @@
     <title>@Umbraco.Field("pageTitle", recursive: true)</title>
     <meta name="description" content="@Umbraco.Field("metaDescription", recursive: true)">
     <meta name="keywords" content="@Umbraco.Field("metaKeywords", recursive: true)">
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/sass/custom.css" rel="stylesheet" />
+    <link href="~/Content/sass/style.css" rel="stylesheet" />
 </head>
 <body>
     <div class="container body-content">
@@ -25,6 +24,7 @@
                     <img class="img-responsive col-lg-6 col-md-4 col-sm-3 col-xs-6" src="@pageLogo.GetPropertyValue("umbracoFile")" alt="logo" />
                 </div>
             </div>
+            <hr>
             @Umbraco.RenderMacro("main_menu", new { startLevel = "1", finishLevel = "3" })
         </header>
         @RenderBody()
